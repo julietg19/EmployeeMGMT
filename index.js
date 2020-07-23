@@ -1,6 +1,32 @@
+//import prompt from inquirer
+const { prompt } = require("inquirer");
 
+init();
 
-//create database - schema- defines what it looks like- sql file 
+//init function
 
-//import inquirer 
+function init() {
+  loadPrompts();
+}
 
+//load prompts function
+
+async function loadPrompts() {
+  const { choice } = await prompt([
+    {
+      type: "list",
+      name: "choice",
+      message: "What would you like to do?",
+      choices: [
+        {
+          name: "view all employees",
+          value: "view_Employees",
+        },
+      ],
+    },
+  ]);
+}
+
+//view all employees
+//add employee
+//view all employees by department
