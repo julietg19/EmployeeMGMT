@@ -30,3 +30,14 @@ async function loadPrompts() {
 //view all employees
 //add employee
 //view all employees by department
+
+//switch statement
+
+switch (choice) {
+  case "view_Employees":
+    return viewAllEmployees();
+    break;
+
+  default:
+    return quit;
+}
