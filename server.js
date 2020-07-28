@@ -1,6 +1,14 @@
 //import prompt from inquirer
 const { prompt } = require("inquirer");
 
+//import db
+
+const db = require("./db");
+
+//import require
+
+require("console.table");
+
 init();
 
 //init function
@@ -31,6 +39,8 @@ async function loadPrompts() {
 //add employee
 //view all employees by department
 
+
+
 //switch statement
 
 switch (choice) {
@@ -40,4 +50,9 @@ switch (choice) {
 
   default:
     return quit;
+}
+
+async function viewAllEmployees() {
+  const employees = await db.findAllEmployees();
+  console.table(employees);
 }
