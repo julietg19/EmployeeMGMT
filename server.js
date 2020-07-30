@@ -25,34 +25,42 @@ async function loadPrompts() {
       type: "list",
       name: "choice",
       message: "What would you like to do?",
-      choices: [
-        {
-          name: "view all employees",
-          value: "view_Employees",
-        },
-      ],
+      choices: ["View all Employees", "View all Roles", "View all Departments"],
     },
+
+    //here
   ]);
+
+  //switch statement
+
+  switch (choice) {
+    case "View all Employees":
+      return viewAllEmployees();
+      break;
+    case "View all Roles":
+      return viewAllRoles();
+      break;
+    case "View all Departments":
+      return viewAllDepartments();
+      break;
+
+    default:
+      return quit;
+  }
 }
 
-//view all employees
-//add employee
-//view all employees by department
-
-
-
-//switch statement
-
-switch (choice) {
-  case "view_Employees":
-    return viewAllEmployees();
-    break;
-
-  default:
-    return quit;
-}
 
 async function viewAllEmployees() {
   const employees = await db.findAllEmployees();
+  console.table(employees);
+}
+
+async function viewAllRoles() {
+  const employees = await db.findAllRoles();
+  console.table(employees);
+}
+
+async function viewAllDepartments() {
+  const employees = await db.findAllDepartments();
   console.table(employees);
 }
