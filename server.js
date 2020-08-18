@@ -25,10 +25,15 @@ async function loadPrompts() {
       type: "list",
       name: "choice",
       message: "What would you like to do?",
-      choices: ["View all Employees", "View all Roles", "View all Departments"],
+      choices: [
+        "View all Employees",
+        "View all Roles",
+        "View all Departments",
+        "Add an Employee",
+        "Add a Role",
+        "Update a Role",
+      ],
     },
-
-    //here
   ]);
 
   //switch statement
@@ -43,12 +48,13 @@ async function loadPrompts() {
     case "View all Departments":
       return viewAllDepartments();
       break;
-
+    case "Add an Employee":
+      return addEmployee();
+      break;
     default:
       return quit;
   }
 }
-
 
 async function viewAllEmployees() {
   const employees = await db.findAllEmployees();
@@ -63,4 +69,25 @@ async function viewAllRoles() {
 async function viewAllDepartments() {
   const employees = await db.findAllDepartments();
   console.table(employees);
+}
+
+async function addEmployee() {
+  const roles = await db.findAllRoles();
+  const employee = await prompt([
+    { name: "first_name", message: "Please enter first name of new employee" },
+    { name: "last_name", message: "Please enter last name of new employee" },
+  ]);
+  // console.log(roles);
+
+  const roleChoices = roles.map((id, title) => ({ name: title, value: id }));
+
+  const { roleId } = await prompt({
+    type: "list",
+    name: "roleId",
+    message: "What is the employee's role?",
+    choices: roleChoices,
+  });
+  employee.role_id = roleId;
+
+  console.log(employee);
 }

@@ -34,6 +34,7 @@ module.exports = new DB(connection);
 // create function in index in database that handles the query
 //
 
+
 //add new role
 //add new employee
 //add new department
