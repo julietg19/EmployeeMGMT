@@ -15,13 +15,17 @@ class DB {
   }
   findAllRoles() {
     return this.connection.query(
-      "SELECT role.title, role.salary, department.name FROM employees.role left join employees.department on role.id = department.id ORDER BY role.id;"
+      "SELECT role.id, role.title, department.name AS department, role.salary FROM role LEFT JOIN department on role.department_id = department.id;"
     );
   }
   findAllDepartments() {
     return this.connection.query(
       "SELECT department.name FROM employees.department"
     );
+  }
+
+  createEmployee(employee) {
+    return this.connection.query("INSERT INTO employee SET ?", employee);
   }
 }
 
@@ -33,7 +37,6 @@ module.exports = new DB(connection);
 //return value will be the function you call
 // create function in index in database that handles the query
 //
-
 
 //add new role
 //add new employee

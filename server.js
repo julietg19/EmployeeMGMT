@@ -51,8 +51,11 @@ async function loadPrompts() {
     case "Add an Employee":
       return addEmployee();
       break;
+    case "Add a Role":
+      return addRole();
+      break;
     default:
-      return quit;
+      return quit();
   }
 }
 
@@ -77,9 +80,12 @@ async function addEmployee() {
     { name: "first_name", message: "Please enter first name of new employee" },
     { name: "last_name", message: "Please enter last name of new employee" },
   ]);
-  // console.log(roles);
+  console.log(roles);
 
-  const roleChoices = roles.map((id, title) => ({ name: title, value: id }));
+  const roleChoices = roles.map(({ id, title }) => ({
+    name: title,
+    value: id,
+  }));
 
   const { roleId } = await prompt({
     type: "list",
@@ -90,4 +96,19 @@ async function addEmployee() {
   employee.role_id = roleId;
 
   console.log(employee);
+
+  await db.createEmployee(employee);
+  console.log("employee added!");
+  loadPrompts();
+}
+
+async function addRole() {
+  const departments = await db.findAllDepartments();
+  console.log(departments);
+}
+
+function quit() {
+  console.log("goodbye");
+
+  process.exit();
 }
