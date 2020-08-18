@@ -54,6 +54,12 @@ async function loadPrompts() {
     case "Add a Role":
       return addRole();
       break;
+    case "Add a Department":
+      return addDepartment();
+      break;
+    case "Update an Employee":
+      return updateEmployee();
+      break;
     default:
       return quit();
   }
@@ -106,6 +112,10 @@ async function addRole() {
   const departments = await db.findAllDepartments();
   console.log(departments);
 }
+
+async function addDepartment() {}
+
+async function updateEmployee() {}
 
 function quit() {
   console.log("goodbye");
