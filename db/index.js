@@ -20,7 +20,7 @@ class DB {
   }
   findAllDepartments() {
     return this.connection.query(
-      "SELECT department.name FROM employees.department"
+      "SELECT department.id, department.name, SUM(role.salary) AS utilized_budget FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id GROUP BY department.id, department.name;"
     );
   }
 
@@ -28,6 +28,13 @@ class DB {
     return this.connection.query("INSERT INTO employee SET ?", employee);
   }
 
+  createDepartment(department) {
+    return this.connection.query("INSERT INTO department SET ?", department);
+  }
+
+  createRole(role) {
+    return this.connection.query("INSERT INTO role SET ?", role);
+  }
   createDepartment(department) {
     return this.connection.query("INSERT INTO department SET ?", department);
   }

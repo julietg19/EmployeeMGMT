@@ -32,6 +32,7 @@ async function loadPrompts() {
         "Add an Employee",
         "Add a Role",
         "Update a Role",
+        "Add a Department",
       ],
     },
   ]);
@@ -111,9 +112,39 @@ async function addEmployee() {
 async function addRole() {
   const departments = await db.findAllDepartments();
   console.log(departments);
+
+  const departmentChoices = departments.map(({ id, name }) => ({
+    name: name,
+    value: id,
+  }));
+  const role = await prompt([
+    {
+      name: "title",
+      message: "What is the name of the role you would like to add?",
+    },
+    {
+      name: "salary",
+      message: "What is the salary for this role?",
+    },
+    {
+      type: "list",
+      name: "department_id",
+      message: "Which department does this role belong to?",
+      choices: departmentChoices,
+    },
+  ]);
+  console.log(role);
+  await db.createRole(role);
+  loadPrompts();
 }
 
-async function addDepartment() {}
+async function addDepartment() {
+  const department = await prompt([
+    { name: "name", message: "What is the name of this department?" },
+  ]);
+  await db.createDepartment(department);
+  loadPrompts();
+}
 
 async function updateEmployee() {}
 
