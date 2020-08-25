@@ -31,7 +31,7 @@ async function loadPrompts() {
         "View all Departments",
         "Add an Employee",
         "Add a Role",
-        "Update a Role",
+        "Update Employee Role",
         "Add a Department",
       ],
     },
@@ -47,7 +47,7 @@ async function loadPrompts() {
       return viewAllRoles();
       break;
     case "View all Departments":
-      return viewAllDepartments();
+      return findAllDepartments();
       break;
     case "Add an Employee":
       return addEmployee();
@@ -60,6 +60,9 @@ async function loadPrompts() {
       break;
     case "Update an Employee":
       return updateEmployee();
+      break;
+    case "Update Employee Role":
+      return updateEmployeeRole();
       break;
     default:
       return quit();
@@ -76,9 +79,16 @@ async function viewAllRoles() {
   console.table(employees);
 }
 
-async function viewAllDepartments() {
-  const employees = await db.findAllDepartments();
-  console.table(employees);
+// async function viewAllDepartments() {
+//   const employees = await db.findAllDepartments();
+//   console.table(employees);
+// }
+
+async function findAllDepartments() {
+  const departments = await db.findAllDepartments();
+  console.log("\n");
+  console.table(departments);
+  loadPrompts();
 }
 
 async function addEmployee() {
@@ -146,7 +156,39 @@ async function addDepartment() {
   loadPrompts();
 }
 
-async function updateEmployee() {}
+async function updateEmployeeRole() {
+  const employees = await db.findAllEmployees();
+  const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+    name: `${first_name} ${last_name}`,
+    value: id,
+  }));
+
+  const { employeeid } = await prompt([
+    {
+      type: "list",
+      name: "employeeid",
+      message: "Which employee's role would you like to update?",
+      choices: employeeChoices,
+    },
+  ]);
+  const roles = await db.findAllRoles();
+  const roleChoices = roles.map(({ id, title }) => ({
+    name: title,
+    value: id,
+  }));
+
+  const { roleid } = await prompt([
+    {
+      type: "list",
+      name: "roleid",
+      message: "Which role do you want to assign to selected employee?",
+      choices: roleChoices,
+    },
+  ]);
+  await db.updateEmployeeRole(employeeid, roleid);
+
+  loadPrompts();
+}
 
 function quit() {
   console.log("goodbye");
